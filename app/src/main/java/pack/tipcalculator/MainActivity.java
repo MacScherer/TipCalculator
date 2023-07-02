@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 percentage = progress;
-                textViewPercent.setText(percentage + " %");
+                textViewPercent.setText(Math.round(percentage) + " %");
+                calculate();
             }
 
             @Override
@@ -45,5 +47,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private void calculate() {
+        String stringValue = editValue.getText().toString();
+        if (stringValue == null || stringValue.equals("")){
+            Toast.makeText(this, "TYPE A VALUE", Toast.LENGTH_SHORT).show();
+        }else {
+            double valueType = Double.parseDouble(stringValue);
+            double tip = valueType * (percentage/100);
+            double total = valueType + tip;
+            editTextTip.setText("R$ " + String.format("%.2f", tip));
+            editTextTotal.setText("R$ " + String.format("%.2f", total));
+        }
     }
 }
